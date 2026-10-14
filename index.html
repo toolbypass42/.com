@@ -3,511 +3,594 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bypass Tool – Gtraffic.io</title>
+    <title>Bypass Tool - Viền Vàng Nền Trắng</title>
     <style>
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
-            background: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f0f0;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 16px;
+            padding: 20px;
         }
 
-        /* ---- Main container with yellow border ---- */
-        .tool-container {
+        /* Khung chính: viền vàng, nền trắng */
+        .container {
+            background: #ffffff;
+            border: 4px solid #FFD700;
+            border-radius: 12px;
+            padding: 25px;
+            max-width: 650px;
             width: 100%;
-            max-width: 680px;
-            background: #ffffff;
-            border: 3px solid #f5c518;   /* vibrant yellow */
-            border-radius: 18px;
-            padding: 28px 26px 32px;
-            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
-            color: #111111;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
         }
 
-        /* ---- Header ---- */
-        .tool-header {
+        h1 {
             text-align: center;
-            margin-bottom: 22px;
+            color: #B8860B;
+            font-size: 22px;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
         }
 
-        .tool-header h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            color: #111111;
-        }
-
-        .tool-header p {
-            font-size: 0.95rem;
-            color: #444444;
-            margin-top: 4px;
-        }
-
-        /* ---- Provider list ---- */
-        .provider-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px 12px;
-            justify-content: center;
-            margin-bottom: 22px;
-        }
-
-        .provider-btn {
-            background: #ffffff;
-            border: 1.5px solid #111111;
-            border-radius: 40px;
-            padding: 6px 16px;
-            font-size: 0.88rem;
-            font-weight: 500;
-            color: #111111;
-            cursor: pointer;
-            transition: background 0.2s, color 0.2s, border-color 0.2s;
-            user-select: none;
-        }
-
-        .provider-btn:hover,
-        .provider-btn.active {
-            background: #f5c518;
-            border-color: #f5c518;
-            color: #111111;
-            font-weight: 600;
-        }
-
-        /* ---- Input area ---- */
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+        .subtitle {
+            text-align: center;
+            color: #888;
+            font-size: 12px;
             margin-bottom: 20px;
         }
 
-        .input-group label {
-            font-size: 0.95rem;
+        /* Danh sách dịch vụ */
+        .services {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .service-item {
+            background: #ffffff;
+            border: 2px solid #FFD700;
+            color: #B8860B;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            user-select: none;
             font-weight: 600;
-            color: #111111;
+        }
+
+        .service-item:hover {
+            background: #FFF8DC;
+        }
+
+        .service-item.selected {
+            background: #FFD700;
+            color: #000;
+            border-color: #B8860B;
+        }
+
+        /* Ô nhập link */
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 12px;
+            color: #B8860B;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
         }
 
         .input-group input {
             width: 100%;
-            padding: 14px 16px;
-            border: 2px solid #111111;
-            border-radius: 12px;
-            font-size: 1rem;
-            color: #111111;
+            padding: 12px 16px;
             background: #ffffff;
+            border: 2px solid #FFD700;
+            border-radius: 8px;
+            color: #333;
+            font-size: 14px;
             outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
+            transition: border-color 0.3s;
         }
 
         .input-group input:focus {
-            border-color: #f5c518;
-            box-shadow: 0 0 0 3px rgba(245, 197, 24, 0.25);
+            border-color: #B8860B;
+            box-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
         }
 
         .input-group input::placeholder {
-            color: #888888;
+            color: #bbb;
         }
 
-        /* ---- Bypass button ---- */
-        .bypass-btn {
+        /* Nút bấm */
+        .btn-bypass {
             width: 100%;
-            padding: 15px;
-            background: #111111;
-            color: #f5c518;
-            border: none;
-            border-radius: 12px;
-            font-size: 1.15rem;
+            padding: 14px;
+            background: #FFD700;
+            border: 2px solid #B8860B;
+            border-radius: 8px;
+            color: #000;
+            font-size: 16px;
             font-weight: 700;
-            letter-spacing: 0.5px;
             cursor: pointer;
-            transition: background 0.2s, color 0.2s, opacity 0.2s;
-            margin-bottom: 20px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .bypass-btn:hover:not(:disabled) {
-            background: #f5c518;
-            color: #111111;
+        .btn-bypass:hover:not(:disabled) {
+            background: #FFC700;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 215, 0, 0.6);
         }
 
-        .bypass-btn:disabled {
-            opacity: 0.55;
+        .btn-bypass:disabled {
+            opacity: 0.5;
             cursor: not-allowed;
         }
 
-        /* ---- Status panel ---- */
+        /* Bảng trạng thái */
         .status-panel {
-            background: #fafafa;
-            border: 1.5px solid #e0e0e0;
-            border-radius: 14px;
-            padding: 18px 18px 14px;
-            margin-bottom: 18px;
-            font-size: 0.92rem;
-            line-height: 1.7;
-            color: #111111;
-            min-height: 180px;
+            margin-top: 20px;
+            background: #ffffff;
+            border: 2px solid #FFD700;
+            border-radius: 8px;
+            padding: 16px;
+            display: none;
         }
 
-        .status-line {
+        .status-panel.visible {
+            display: block;
+        }
+
+        .status-header {
             display: flex;
-            align-items: baseline;
-            gap: 6px;
-            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #FFD700;
         }
 
-        .status-label {
-            font-weight: 600;
-            color: #555555;
-            min-width: 110px;
+        .status-title {
+            font-size: 12px;
+            color: #B8860B;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
         }
 
-        .status-value {
-            font-weight: 500;
-            color: #111111;
-            word-break: break-all;
+        .status-info {
+            font-size: 11px;
+            color: #999;
         }
 
         .status-log {
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px dashed #d0d0d0;
             font-family: 'Courier New', monospace;
-            font-size: 0.88rem;
-            color: #222222;
-            white-space: pre-wrap;
-            word-break: break-word;
-            min-height: 70px;
+            font-size: 12px;
+            line-height: 1.8;
+            color: #666;
+            max-height: 250px;
+            overflow-y: auto;
         }
 
-        /* ---- Error / result messages ---- */
-        .error-msg {
-            color: #cc0000;
+        .status-log .log-line {
+            padding: 2px 0;
+        }
+
+        .status-log .log-line.done {
+            color: #228B22;
+            font-weight: 600;
+        }
+
+        .status-log .log-line.error {
+            color: #ff0000;
             font-weight: 700;
-            font-size: 1rem;
-            text-align: center;
-            margin-top: 8px;
         }
 
-        .success-link {
+        .status-log .log-line.waiting {
+            color: #B8860B;
+        }
+
+        /* Kết quả */
+        .result-box {
+            margin-top: 15px;
+            padding: 16px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .result-box.visible {
             display: block;
-            text-align: center;
-            margin-top: 12px;
-            padding: 12px;
-            background: #f5c518;
-            color: #111111;
+        }
+
+        .result-box.success {
+            background: #FFFACD;
+            border: 2px solid #FFD700;
+        }
+
+        .result-box.error {
+            background: #FFF0F0;
+            border: 2px solid #ff4444;
+        }
+
+        .result-box .result-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
             font-weight: 700;
-            text-decoration: none;
-            border-radius: 10px;
-            border: 2px solid #111111;
-            transition: background 0.2s;
+        }
+
+        .result-box.success .result-label {
+            color: #B8860B;
+        }
+
+        .result-box.error .result-label {
+            color: #ff0000;
+        }
+
+        .result-box .result-content {
+            font-size: 13px;
             word-break: break-all;
+            line-height: 1.5;
         }
 
-        .success-link:hover {
-            background: #e0b010;
+        .result-box.success .result-content a {
+            color: #B8860B;
+            text-decoration: none;
+            font-weight: 600;
         }
 
-        /* ---- Hidden helper ---- */
-        .hidden {
-            display: none !important;
+        .result-box.success .result-content a:hover {
+            text-decoration: underline;
         }
 
-        /* ---- Responsive ---- */
-        @media (max-width: 480px) {
-            .tool-container {
-                padding: 20px 16px 24px;
-            }
-            .tool-header h1 {
-                font-size: 1.45rem;
-            }
-            .provider-btn {
-                font-size: 0.78rem;
-                padding: 5px 12px;
-            }
-            .status-label {
-                min-width: 90px;
-                font-size: 0.85rem;
-            }
-            .status-value {
-                font-size: 0.85rem;
-            }
+        .result-box.error .result-content {
+            color: #ff0000;
+            font-weight: 700;
+        }
+
+        /* Thanh tiến trình */
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #FFF8DC;
+            border-radius: 3px;
+            margin-top: 12px;
+            overflow: hidden;
+            display: none;
+            border: 1px solid #FFD700;
+        }
+
+        .progress-bar.visible {
+            display: block;
+        }
+
+        .progress-bar .progress-fill {
+            height: 100%;
+            background: #FFD700;
+            width: 0%;
+            transition: width 1s linear;
+        }
+
+        /* Thông báo lỗi input */
+        .input-error {
+            color: #ff0000;
+            font-size: 11px;
+            margin-top: 4px;
+            display: none;
+            font-weight: 600;
+        }
+
+        .input-error.visible {
+            display: block;
         }
     </style>
 </head>
 <body>
 
-<div class="tool-container">
+<div class="container">
+    <h1>⚡ BYPASS TOOL</h1>
+    <p class="subtitle">Chọn dịch vụ và dán link cần vượt</p>
 
-    <!-- ===== HEADER ===== -->
-    <div class="tool-header">
-        <h1>Bypass Tool</h1>
-        <p>Vượt link an toàn – nhanh chóng – hiệu quả</p>
+    <!-- Danh sách dịch vụ -->
+    <div class="services" id="serviceList">
+        <div class="service-item" data-service="gtraffic">Gtraffic.io</div>
+        <div class="service-item" data-service="link4m">Link4m</div>
+        <div class="service-item" data-service="layma">Layma.net</div>
+        <div class="service-item" data-service="traffic4k">Traffic4k.com</div>
+        <div class="service-item" data-service="site2s">Site2s.com</div>
+        <div class="service-item" data-service="bbmkt">Bbmkt.com</div>
+        <div class="service-item" data-service="ontop">Ontop.link</div>
     </div>
 
-    <!-- ===== PROVIDER LIST ===== -->
-    <div class="provider-list" id="providerList">
-        <span class="provider-btn" data-url="https://gtraffic.io/">Gtraffic.io</span>
-        <span class="provider-btn" data-url="https://link4m.net/">Link4m</span>
-        <span class="provider-btn" data-url="https://layma.net/">Layma.net</span>
-        <span class="provider-btn" data-url="https://traffic4k.com/">Traffic4k.com</span>
-        <span class="provider-btn" data-url="https://site2s.com/">Site2s.com</span>
-        <span class="provider-btn" data-url="https://bbmkts.com/">Bbmkt.com</span>
-        <span class="provider-btn" data-url="https://ontop.link/">Ontop.link</span>
-    </div>
-
-    <!-- ===== INPUT ===== -->
+    <!-- Ô nhập link -->
     <div class="input-group">
         <label for="urlInput">Dán URL của web cần vượt link</label>
-        <input type="text" id="urlInput" placeholder="https://..." autocomplete="off" spellcheck="false">
+        <input type="text" id="urlInput" value="https://" autocomplete="off" spellcheck="false">
+        <div class="input-error" id="inputError">Vui lòng nhập link bắt đầu bằng https://</div>
     </div>
 
-    <!-- ===== BYPASS BUTTON ===== -->
-    <button class="bypass-btn" id="bypassBtn">VƯỢT LINK</button>
+    <!-- Nút bypass -->
+    <button class="btn-bypass" id="bypassBtn">🚀 Vượt Link</button>
 
-    <!-- ===== STATUS PANEL ===== -->
+    <!-- Thanh tiến trình -->
+    <div class="progress-bar" id="progressBar">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <!-- Bảng trạng thái -->
     <div class="status-panel" id="statusPanel">
-        <div class="status-line">
-            <span class="status-label">Trạng thái:</span>
-            <span class="status-value" id="statusValue">Sẵn sàng</span>
+        <div class="status-header">
+            <span class="status-title">📡 Trạng thái</span>
+            <span class="status-info" id="statusInfo">IP: -- | Thiết bị: --</span>
         </div>
-        <div class="status-line">
-            <span class="status-label">Thời gian:</span>
-            <span class="status-value" id="timeValue">--:--:--</span>
-        </div>
-        <div class="status-line">
-            <span class="status-label">IP thiết bị:</span>
-            <span class="status-value" id="ipValue">Đang lấy...</span>
-        </div>
-        <div class="status-log" id="statusLog">Nhấn "VƯỢT LINK" để bắt đầu quá trình bypass.</div>
+        <div class="status-log" id="statusLog"></div>
     </div>
 
-    <!-- ===== RESULT AREA (hidden by default) ===== -->
-    <div id="resultArea"></div>
-
+    <!-- Kết quả -->
+    <div class="result-box" id="resultBox">
+        <div class="result-label" id="resultLabel"></div>
+        <div class="result-content" id="resultContent"></div>
+    </div>
 </div>
 
 <script>
-    // ============================================================
-    //  HIDDEN MAPPING – exact URL patterns → output links
-    // ============================================================
-    const MAPPINGS = [
-        {
-            pattern: /^https:\/\/layma\.net\/5ABkvpfQu$/i,
-            output: 'https://www.mediafire.com/file/msusgfxw3xosdpl/AimLock+Bro.zip/file'
+    // === CẤU HÌNH LINK ===
+    const SERVICE_MAP = {
+        'https://gtraffic.io/Yv2QaKD': {
+            name: 'Gtraffic.io',
+            result: 'https://pastefy.app/bbSrxKOk/raw'
         },
-        {
-            pattern: /^https:\/\/link4m\.net\/eYerc$/i,
-            output: 'https://www.mediafire.com/file/yqefvmq4mefu7h5/Minecraft_PE_26.30_BANDISHARE.apk/file'
+        'https://link4m.net/eYerc': {
+            name: 'Link4m',
+            result: 'https://www.mediafire.com/file/yqefvmq4mefu7h5/Minecraft_PE_26.30_BANDISHARE.apk/file'
         },
-        {
-            pattern: /^https:\/\/bbmkts\.com\/go\/Hfz47hy5$/i,
-            output: 'https://www.mediafire.com/file/i5eioodkjudzmty/hackff+menuFFM.zip/file'
+        'https://layma.net/5ABkvpfQu': {
+            name: 'Layma.net',
+            result: 'https://www.mediafire.com/file/msusgfxw3xosdpl/AimLock+Bro.zip/file'
         },
-        {
-            pattern: /^https:\/\/gtraffic\.io\/Yv2QaKD$/i,
-            output: 'https://pastefy.app/bbSrxKOk/raw'
+        'https://bbmkts.com/go/Hfz47hy5': {
+            name: 'Bbmkt.com',
+            result: 'https://www.mediafire.com/file/i5eioodkjudzmty/hackff+menuFFM.zip/file'
         }
+    };
+
+    const STATUS_STEPS = [
+        'Sẵn sàng',
+        'Đang kiểm tra kết nối...',
+        'Kết nối thành công!',
+        'Đang tải module...',
+        'Tải module hoàn tất!',
+        'Đang giả lập bypass...',
+        'Bỏ qua xác thực...',
+        'Đang xác nhận...',
+        'Bypass thành công!',
+        'Bạn đã vượt qua giới hạn!'
     ];
 
-    // ============================================================
-    //  DOM references
-    // ============================================================
-    const urlInput      = document.getElementById('urlInput');
-    const bypassBtn     = document.getElementById('bypassBtn');
-    const statusValue   = document.getElementById('statusValue');
-    const timeValue     = document.getElementById('timeValue');
-    const ipValue       = document.getElementById('ipValue');
-    const statusLog     = document.getElementById('statusLog');
-    const resultArea    = document.getElementById('resultArea');
-    const providerList  = document.getElementById('providerList');
-
-    // ============================================================
-    //  STATE
-    // ============================================================
+    let selectedService = null;
     let isProcessing = false;
-    let countdownInterval = null;
-    let deviceIP = 'Đang lấy...';
 
-    // ============================================================
-    //  UTILITIES
-    // ============================================================
+    const serviceList = document.getElementById('serviceList');
+    const urlInput = document.getElementById('urlInput');
+    const bypassBtn = document.getElementById('bypassBtn');
+    const inputError = document.getElementById('inputError');
+    const statusPanel = document.getElementById('statusPanel');
+    const statusLog = document.getElementById('statusLog');
+    const statusInfo = document.getElementById('statusInfo');
+    const resultBox = document.getElementById('resultBox');
+    const resultLabel = document.getElementById('resultLabel');
+    const resultContent = document.getElementById('resultContent');
+    const progressBar = document.getElementById('progressBar');
+    const progressFill = document.getElementById('progressFill');
 
-    /** Update the clock in the status panel. */
-    function updateClock() {
-        const now = new Date();
-        timeValue.textContent = now.toLocaleTimeString('vi-VN', { hour12: false });
-    }
+    // Khóa prefix https:// - người dùng không thể xóa
+    const FIXED_PREFIX = 'https://';
 
-    /** Append a line to the status log and auto‑scroll. */
-    function appendLog(msg) {
-        statusLog.textContent = msg;
-    }
+    urlInput.addEventListener('keydown', (e) => {
+        const cursorPos = urlInput.selectionStart;
+        const selEnd = urlInput.selectionEnd;
 
-    /** Set the main status line. */
-    function setStatus(msg) {
-        statusValue.textContent = msg;
-    }
+        // Chặn xóa vào vùng prefix
+        if ((e.key === 'Backspace' || e.key === 'Delete') && cursorPos <= FIXED_PREFIX.length) {
+            if (e.key === 'Backspace' && cursorPos <= FIXED_PREFIX.length) {
+                e.preventDefault();
+            }
+        }
 
-    /** Show a red error message in the result area. */
-    function showError(message) {
-        resultArea.innerHTML = `<div class="error-msg">${message}</div>`;
-    }
-
-    /** Show a success link in the result area. */
-    function showSuccessLink(url) {
-        resultArea.innerHTML = `<a class="success-link" href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`;
-    }
-
-    /** Clear the result area. */
-    function clearResult() {
-        resultArea.innerHTML = '';
-    }
-
-    /**
-     * Simulate fetching the device IP.
-     * In a real tool this would call an API; here we generate a
-     * stable pseudo‑random IP based on the user agent + a seed.
-     */
-    function fetchIP() {
-        // Simple deterministic pseudo‑IP so it looks realistic
-        const seed = navigator.userAgent.length + (navigator.hardwareConcurrency || 4);
-        const a = (seed * 7) % 223 + 1;
-        const b = (seed * 13) % 255;
-        const c = (seed * 19) % 255;
-        const d = (seed * 23) % 254 + 1;
-        deviceIP = `${a}.${b}.${c}.${d}`;
-        ipValue.textContent = deviceIP;
-    }
-
-    // ============================================================
-    //  PROVIDER BUTTONS – click to pre‑fill the input
-    // ============================================================
-    providerList.addEventListener('click', (e) => {
-        const btn = e.target.closest('.provider-btn');
-        if (!btn) return;
-        // Visual feedback
-        document.querySelectorAll('.provider-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        // Pre‑fill the input with the provider base URL
-        urlInput.value = btn.dataset.url;
-        urlInput.focus();
+        // Chặn chọn toàn bộ bao gồm prefix
+        if (e.key === 'a' && (e.ctrlKey || e.metaKey)) {
+            e.preventDefault();
+            urlInput.setSelectionRange(FIXED_PREFIX.length, urlInput.value.length);
+        }
     });
 
-    // ============================================================
-    //  MAIN BYPASS LOGIC
-    // ============================================================
-    bypassBtn.addEventListener('click', () => {
+    urlInput.addEventListener('input', () => {
+        // Đảm bảo luôn có prefix https://
+        if (!urlInput.value.startsWith(FIXED_PREFIX)) {
+            urlInput.value = FIXED_PREFIX + urlInput.value.replace(/^https?:\/\//i, '');
+        }
+        hideInputError();
+        resetOutput();
+    });
+
+    // Chặn click/di chuyển con trỏ vào vùng prefix
+    urlInput.addEventListener('click', () => {
+        if (urlInput.selectionStart < FIXED_PREFIX.length) {
+            urlInput.setSelectionRange(FIXED_PREFIX.length, FIXED_PREFIX.length);
+        }
+    });
+
+    // === CHỌN DỊCH VỤ (chỉ chọn, KHÔNG điền link) ===
+    serviceList.addEventListener('click', (e) => {
+        const item = e.target.closest('.service-item');
+        if (!item) return;
+
+        document.querySelectorAll('.service-item').forEach(el => el.classList.remove('selected'));
+        item.classList.add('selected');
+        selectedService = item.dataset.service;
+
+        // Không tự động điền link - chỉ reset output
+        resetOutput();
+    });
+
+    // === NÚT BYPASS ===
+    bypassBtn.addEventListener('click', async () => {
         if (isProcessing) return;
 
-        clearResult();
-        const rawUrl = urlInput.value.trim();
+        const url = urlInput.value.trim();
 
-        // ---- Validate https:// ----
-        if (!rawUrl.startsWith('https://')) {
-            showError('Lỗi: Vui lòng nhập URL bắt đầu bằng https://');
+        if (url === FIXED_PREFIX || url.length <= FIXED_PREFIX.length) {
+            showInputError('Vui lòng nhập URL đầy đủ sau https://');
             return;
         }
 
-        // ---- Validate against known mappings ----
-        const matched = MAPPINGS.find(m => m.pattern.test(rawUrl));
+        if (!url.startsWith(FIXED_PREFIX)) {
+            showInputError('Chỉ chấp nhận link bắt đầu bằng https://');
+            return;
+        }
 
+        if (!selectedService) {
+            showInputError('Vui lòng chọn một dịch vụ ở trên.');
+            return;
+        }
+
+        hideInputError();
         isProcessing = true;
         bypassBtn.disabled = true;
-        bypassBtn.textContent = 'ĐANG XỬ LÝ...';
+        bypassBtn.textContent = '⏳ Đang xử lý...';
 
-        // Reset log
-        appendLog('Bắt đầu quá trình bypass...');
-        setStatus('Đang kiểm tra kết nối...');
+        resetOutput();
+        statusPanel.classList.add('visible');
+        progressBar.classList.add('visible');
 
-        // ---- 15‑second countdown ----
-        let remaining = 15;
-        const totalSeconds = 15;
+        statusInfo.textContent = `IP: ${generateFakeIP()} | Thiết bị: ${navigator.platform || 'Unknown'}`;
 
-        // Update the log every second with the countdown
-        countdownInterval = setInterval(() => {
-            remaining--;
-            if (remaining >= 0) {
-                appendLog(`⏳ Vui lòng chờ... còn ${remaining} giây`);
+        for (let i = 0; i < STATUS_STEPS.length; i++) {
+            await sleep(i === 0 ? 300 : 700 + Math.random() * 400);
+
+            const line = document.createElement('div');
+            line.className = 'log-line';
+
+            if (i === 0 || i === STATUS_STEPS.length - 1) {
+                line.classList.add('done');
+            } else {
+                line.classList.add('waiting');
             }
-            if (remaining <= 0) {
-                clearInterval(countdownInterval);
-                countdownInterval = null;
-                finishBypass(matched);
+
+            line.textContent = `[${new Date().toLocaleTimeString()}] ${STATUS_STEPS[i]}`;
+            statusLog.appendChild(line);
+            statusLog.scrollTop = statusLog.scrollHeight;
+
+            progressFill.style.width = `${((i + 1) / STATUS_STEPS.length) * 100}%`;
+
+            if (i > 0) {
+                const prevLines = statusLog.querySelectorAll('.log-line');
+                if (prevLines[i - 1]) {
+                    prevLines[i - 1].classList.remove('waiting');
+                    prevLines[i - 1].classList.add('done');
+                }
             }
-        }, 1000);
+        }
 
-        // Immediately show the first countdown line
-        appendLog(`⏳ Vui lòng chờ... còn ${remaining} giây`);
-    });
+        // Chờ 15 giây
+        await sleep(15000);
 
-    // ============================================================
-    //  FINISH BYPASS – called after the 15‑second countdown
-    // ============================================================
-    function finishBypass(matched) {
-        // ---- Random outcome ----
-        // 85% connection error, 15% 404 error
-        const roll = Math.random(); // 0 ≤ roll < 1
+        const normalizedUrl = url.toLowerCase().replace(/\/+$/, '');
+        const matchedKey = Object.keys(SERVICE_MAP).find(key => {
+            const normalizedKey = key.toLowerCase().replace(/\/+$/, '');
+            return normalizedUrl === normalizedKey || normalizedUrl.startsWith(normalizedKey);
+        });
 
-        if (roll < 0.85) {
-            // ---- 85 % → Connection error ----
-            setStatus('Lỗi kết nối thiết bị');
-            appendLog('❌ Lỗi kết nối thiết bị. Vui lòng kiểm tra kết nối mạng của bạn.');
+        const random = Math.random();
+        const shouldError = random < 0.85;
+        const should404 = random >= 0.85 && random < 1.0;
+
+        if (matchedKey && !shouldError && !should404) {
+            showSuccess(SERVICE_MAP[matchedKey]);
+        } else if (should404) {
+            showError('Error 404: Do not accept this action');
+        } else if (shouldError) {
             showError('Lỗi kết nối thiết bị. Vui lòng kiểm tra kết nối mạng của bạn.');
-        } else {
-            // ---- 15 % → 404 error ----
-            setStatus('Error 404');
-            appendLog('❌ Web ghi: Error 404 – Do not accept this action');
-            showError('Web ghi: Error 404 – Do not accept this action');
+        } else if (!matchedKey) {
+            showError('Link không hợp lệ hoặc không được hỗ trợ. Vui lòng kiểm tra lại.');
         }
 
-        // ---- If the URL matches a known pattern, still show the mapped link ----
-        //    (but only after the error/random outcome is displayed)
-        if (matched) {
-            // Wait a moment, then reveal the mapped link
-            setTimeout(() => {
-                // Append a separator and the success link
-                appendLog(appendLogText => appendLogText); // placeholder (no‑op)
-                appendLog('✅ Bypass thành công! Bạn đã vượt qua giới hạn!');
-                setStatus('Bypass thành công!');
-                showSuccessLink(matched.output);
-                // Also add the final status lines
-                statusLog.textContent += '\nĐang tải module... Tải module hoàn tất!\n' +
-                                         'Đang giả lập bypass... Bỏ qua xác thực...\n' +
-                                         'Đang xác nhận... Bypass thành công!\n' +
-                                         'Bạn đã vượt qua giới hạn!';
-            }, 800);
-        }
-
-        // ---- Re‑enable button ----
         isProcessing = false;
         bypassBtn.disabled = false;
-        bypassBtn.textContent = 'VƯỢT LINK';
+        bypassBtn.textContent = '🚀 Vượt Link';
+    });
+
+    function showSuccess(service) {
+        resultBox.className = 'result-box success visible';
+        resultLabel.textContent = '✅ Kết quả';
+        resultContent.innerHTML = `<a href="${service.result}" target="_blank" rel="noopener">${service.result}</a>`;
+
+        const line = document.createElement('div');
+        line.className = 'log-line done';
+        line.textContent = `[${new Date().toLocaleTimeString()}] ✅ Bypass thành công! Link đã sẵn sàng.`;
+        statusLog.appendChild(line);
+        statusLog.scrollTop = statusLog.scrollHeight;
     }
 
-    // ============================================================
-    //  INITIALISATION
-    // ============================================================
-    (function init() {
-        updateClock();
-        setInterval(updateClock, 1000);
-        fetchIP();
+    function showError(message) {
+        resultBox.className = 'result-box error visible';
+        resultLabel.textContent = '❌ Lỗi';
+        resultContent.textContent = message;
 
-        // If the user types a URL manually, clear any active provider highlight
-        urlInput.addEventListener('input', () => {
-            document.querySelectorAll('.provider-btn').forEach(b => b.classList.remove('active'));
-        });
-    })();
+        const line = document.createElement('div');
+        line.className = 'log-line error';
+        line.textContent = `[${new Date().toLocaleTimeString()}] ❌ ${message}`;
+        statusLog.appendChild(line);
+        statusLog.scrollTop = statusLog.scrollHeight;
+    }
 
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    function resetOutput() {
+        statusLog.innerHTML = '';
+        resultBox.className = 'result-box';
+        resultContent.innerHTML = '';
+        resultLabel.textContent = '';
+        progressFill.style.width = '0%';
+        progressBar.classList.remove('visible');
+        statusPanel.classList.remove('visible');
+    }
+
+    function showInputError(msg) {
+        inputError.textContent = msg;
+        inputError.classList.add('visible');
+    }
+
+    function hideInputError() {
+        inputError.classList.remove('visible');
+    }
+
+    function generateFakeIP() {
+        const octets = [];
+        for (let i = 0; i < 4; i++) {
+            octets.push(Math.floor(Math.random() * 255));
+        }
+        return octets.join('.');
+    }
 </script>
 
 </body>
-  </html>
+</html>
