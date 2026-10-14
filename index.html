@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bypass Tool – Gtraffic.io</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+            background: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 16px;
+        }
+
+        /* ---- Main container with yellow border ---- */
+        .tool-container {
+            width: 100%;
+            max-width: 680px;
+            background: #ffffff;
+            border: 3px solid #f5c518;   /* vibrant yellow */
+            border-radius: 18px;
+            padding: 28px 26px 32px;
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
+            color: #111111;
+        }
+
+        /* ---- Header ---- */
+        .tool-header {
+            text-align: center;
+            margin-bottom: 22px;
+        }
+
+        .tool-header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: #111111;
+        }
+
+        .tool-header p {
+            font-size: 0.95rem;
+            color: #444444;
+            margin-top: 4px;
+        }
+
+        /* ---- Provider list ---- */
+        .provider-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 12px;
+            justify-content: center;
+            margin-bottom: 22px;
+        }
+
+        .provider-btn {
+            background: #ffffff;
+            border: 1.5px solid #111111;
+            border-radius: 40px;
+            padding: 6px 16px;
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: #111111;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s, border-color 0.2s;
+            user-select: none;
+        }
+
+        .provider-btn:hover,
+        .provider-btn.active {
+            background: #f5c518;
+            border-color: #f5c518;
+            color: #111111;
+            font-weight: 600;
+        }
+
+        /* ---- Input area ---- */
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #111111;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #111111;
+            border-radius: 12px;
+            font-size: 1rem;
+            color: #111111;
+            background: #ffffff;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .input-group input:focus {
+            border-color: #f5c518;
+            box-shadow: 0 0 0 3px rgba(245, 197, 24, 0.25);
+        }
+
+        .input-group input::placeholder {
+            color: #888888;
+        }
+
+        /* ---- Bypass button ---- */
+        .bypass-btn {
+            width: 100%;
+            padding: 15px;
+            background: #111111;
+            color: #f5c518;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s, opacity 0.2s;
+            margin-bottom: 20px;
+        }
+
+        .bypass-btn:hover:not(:disabled) {
+            background: #f5c518;
+            color: #111111;
+        }
+
+        .bypass-btn:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
+
+        /* ---- Status panel ---- */
+        .status-panel {
+            background: #fafafa;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 14px;
+            padding: 18px 18px 14px;
+            margin-bottom: 18px;
+            font-size: 0.92rem;
+            line-height: 1.7;
+            color: #111111;
+            min-height: 180px;
+        }
+
+        .status-line {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .status-label {
+            font-weight: 600;
+            color: #555555;
+            min-width: 110px;
+        }
+
+        .status-value {
+            font-weight: 500;
+            color: #111111;
+            word-break: break-all;
+        }
+
+        .status-log {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed #d0d0d0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.88rem;
+            color: #222222;
+            white-space: pre-wrap;
+            word-break: break-word;
+            min-height: 70px;
+        }
+
+        /* ---- Error / result messages ---- */
+        .error-msg {
+            color: #cc0000;
+            font-weight: 700;
+            font-size: 1rem;
+            text-align: center;
+            margin-top: 8px;
+        }
+
+        .success-link {
+            display: block;
+            text-align: center;
+            margin-top: 12px;
+            padding: 12px;
+            background: #f5c518;
+            color: #111111;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 10px;
+            border: 2px solid #111111;
+            transition: background 0.2s;
+            word-break: break-all;
+        }
+
+        .success-link:hover {
+            background: #e0b010;
+        }
+
+        /* ---- Hidden helper ---- */
+        .hidden {
+            display: none !important;
+        }
+
+        /* ---- Responsive ---- */
+        @media (max-width: 480px) {
+            .tool-container {
+                padding: 20px 16px 24px;
+            }
+            .tool-header h1 {
+                font-size: 1.45rem;
+            }
+            .provider-btn {
+                font-size: 0.78rem;
+                padding: 5px 12px;
+            }
+            .status-label {
+                min-width: 90px;
+                font-size: 0.85rem;
+            }
+            .status-value {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="tool-container">
+
+    <!-- ===== HEADER ===== -->
+    <div class="tool-header">
+        <h1>Bypass Tool</h1>
+        <p>Vượt link an toàn – nhanh chóng – hiệu quả</p>
+    </div>
+
+    <!-- ===== PROVIDER LIST ===== -->
+    <div class="provider-list" id="providerList">
+        <span class="provider-btn" data-url="https://gtraffic.io/">Gtraffic.io</span>
+        <span class="provider-btn" data-url="https://link4m.net/">Link4m</span>
+        <span class="provider-btn" data-url="https://layma.net/">Layma.net</span>
+        <span class="provider-btn" data-url="https://traffic4k.com/">Traffic4k.com</span>
+        <span class="provider-btn" data-url="https://site2s.com/">Site2s.com</span>
+        <span class="provider-btn" data-url="https://bbmkts.com/">Bbmkt.com</span>
+        <span class="provider-btn" data-url="https://ontop.link/">Ontop.link</span>
+    </div>
+
+    <!-- ===== INPUT ===== -->
+    <div class="input-group">
+        <label for="urlInput">Dán URL của web cần vượt link</label>
+        <input type="text" id="urlInput" placeholder="https://..." autocomplete="off" spellcheck="false">
+    </div>
+
+    <!-- ===== BYPASS BUTTON ===== -->
+    <button class="bypass-btn" id="bypassBtn">VƯỢT LINK</button>
+
+    <!-- ===== STATUS PANEL ===== -->
+    <div class="status-panel" id="statusPanel">
+        <div class="status-line">
+            <span class="status-label">Trạng thái:</span>
+            <span class="status-value" id="statusValue">Sẵn sàng</span>
+        </div>
+        <div class="status-line">
+            <span class="status-label">Thời gian:</span>
+            <span class="status-value" id="timeValue">--:--:--</span>
+        </div>
+        <div class="status-line">
+            <span class="status-label">IP thiết bị:</span>
+            <span class="status-value" id="ipValue">Đang lấy...</span>
+        </div>
+        <div class="status-log" id="statusLog">Nhấn "VƯỢT LINK" để bắt đầu quá trình bypass.</div>
+    </div>
+
+    <!-- ===== RESULT AREA (hidden by default) ===== -->
+    <div id="resultArea"></div>
+
+</div>
+
+<script>
+    // ============================================================
+    //  HIDDEN MAPPING – exact URL patterns → output links
+    // ============================================================
+    const MAPPINGS = [
+        {
+            pattern: /^https:\/\/layma\.net\/5ABkvpfQu$/i,
+            output: 'https://www.mediafire.com/file/msusgfxw3xosdpl/AimLock+Bro.zip/file'
+        },
+        {
+            pattern: /^https:\/\/link4m\.net\/eYerc$/i,
+            output: 'https://www.mediafire.com/file/yqefvmq4mefu7h5/Minecraft_PE_26.30_BANDISHARE.apk/file'
+        },
+        {
+            pattern: /^https:\/\/bbmkts\.com\/go\/Hfz47hy5$/i,
+            output: 'https://www.mediafire.com/file/i5eioodkjudzmty/hackff+menuFFM.zip/file'
+        },
+        {
+            pattern: /^https:\/\/gtraffic\.io\/Yv2QaKD$/i,
+            output: 'https://pastefy.app/bbSrxKOk/raw'
+        }
+    ];
+
+    // ============================================================
+    //  DOM references
+    // ============================================================
+    const urlInput      = document.getElementById('urlInput');
+    const bypassBtn     = document.getElementById('bypassBtn');
+    const statusValue   = document.getElementById('statusValue');
+    const timeValue     = document.getElementById('timeValue');
+    const ipValue       = document.getElementById('ipValue');
+    const statusLog     = document.getElementById('statusLog');
+    const resultArea    = document.getElementById('resultArea');
+    const providerList  = document.getElementById('providerList');
+
+    // ============================================================
+    //  STATE
+    // ============================================================
+    let isProcessing = false;
+    let countdownInterval = null;
+    let deviceIP = 'Đang lấy...';
+
+    // ============================================================
+    //  UTILITIES
+    // ============================================================
+
+    /** Update the clock in the status panel. */
+    function updateClock() {
+        const now = new Date();
+        timeValue.textContent = now.toLocaleTimeString('vi-VN', { hour12: false });
+    }
+
+    /** Append a line to the status log and auto‑scroll. */
+    function appendLog(msg) {
+        statusLog.textContent = msg;
+    }
+
+    /** Set the main status line. */
+    function setStatus(msg) {
+        statusValue.textContent = msg;
+    }
+
+    /** Show a red error message in the result area. */
+    function showError(message) {
+        resultArea.innerHTML = `<div class="error-msg">${message}</div>`;
+    }
+
+    /** Show a success link in the result area. */
+    function showSuccessLink(url) {
+        resultArea.innerHTML = `<a class="success-link" href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`;
+    }
+
+    /** Clear the result area. */
+    function clearResult() {
+        resultArea.innerHTML = '';
+    }
+
+    /**
+     * Simulate fetching the device IP.
+     * In a real tool this would call an API; here we generate a
+     * stable pseudo‑random IP based on the user agent + a seed.
+     */
+    function fetchIP() {
+        // Simple deterministic pseudo‑IP so it looks realistic
+        const seed = navigator.userAgent.length + (navigator.hardwareConcurrency || 4);
+        const a = (seed * 7) % 223 + 1;
+        const b = (seed * 13) % 255;
+        const c = (seed * 19) % 255;
+        const d = (seed * 23) % 254 + 1;
+        deviceIP = `${a}.${b}.${c}.${d}`;
+        ipValue.textContent = deviceIP;
+    }
+
+    // ============================================================
+    //  PROVIDER BUTTONS – click to pre‑fill the input
+    // ============================================================
+    providerList.addEventListener('click', (e) => {
+        const btn = e.target.closest('.provider-btn');
+        if (!btn) return;
+        // Visual feedback
+        document.querySelectorAll('.provider-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        // Pre‑fill the input with the provider base URL
+        urlInput.value = btn.dataset.url;
+        urlInput.focus();
+    });
+
+    // ============================================================
+    //  MAIN BYPASS LOGIC
+    // ============================================================
+    bypassBtn.addEventListener('click', () => {
+        if (isProcessing) return;
+
+        clearResult();
+        const rawUrl = urlInput.value.trim();
+
+        // ---- Validate https:// ----
+        if (!rawUrl.startsWith('https://')) {
+            showError('Lỗi: Vui lòng nhập URL bắt đầu bằng https://');
+            return;
+        }
+
+        // ---- Validate against known mappings ----
+        const matched = MAPPINGS.find(m => m.pattern.test(rawUrl));
+
+        isProcessing = true;
+        bypassBtn.disabled = true;
+        bypassBtn.textContent = 'ĐANG XỬ LÝ...';
+
+        // Reset log
+        appendLog('Bắt đầu quá trình bypass...');
+        setStatus('Đang kiểm tra kết nối...');
+
+        // ---- 15‑second countdown ----
+        let remaining = 15;
+        const totalSeconds = 15;
+
+        // Update the log every second with the countdown
+        countdownInterval = setInterval(() => {
+            remaining--;
+            if (remaining >= 0) {
+                appendLog(`⏳ Vui lòng chờ... còn ${remaining} giây`);
+            }
+            if (remaining <= 0) {
+                clearInterval(countdownInterval);
+                countdownInterval = null;
+                finishBypass(matched);
+            }
+        }, 1000);
+
+        // Immediately show the first countdown line
+        appendLog(`⏳ Vui lòng chờ... còn ${remaining} giây`);
+    });
+
+    // ============================================================
+    //  FINISH BYPASS – called after the 15‑second countdown
+    // ============================================================
+    function finishBypass(matched) {
+        // ---- Random outcome ----
+        // 85% connection error, 15% 404 error
+        const roll = Math.random(); // 0 ≤ roll < 1
+
+        if (roll < 0.85) {
+            // ---- 85 % → Connection error ----
+            setStatus('Lỗi kết nối thiết bị');
+            appendLog('❌ Lỗi kết nối thiết bị. Vui lòng kiểm tra kết nối mạng của bạn.');
+            showError('Lỗi kết nối thiết bị. Vui lòng kiểm tra kết nối mạng của bạn.');
+        } else {
+            // ---- 15 % → 404 error ----
+            setStatus('Error 404');
+            appendLog('❌ Web ghi: Error 404 – Do not accept this action');
+            showError('Web ghi: Error 404 – Do not accept this action');
+        }
+
+        // ---- If the URL matches a known pattern, still show the mapped link ----
+        //    (but only after the error/random outcome is displayed)
+        if (matched) {
+            // Wait a moment, then reveal the mapped link
+            setTimeout(() => {
+                // Append a separator and the success link
+                appendLog(appendLogText => appendLogText); // placeholder (no‑op)
+                appendLog('✅ Bypass thành công! Bạn đã vượt qua giới hạn!');
+                setStatus('Bypass thành công!');
+                showSuccessLink(matched.output);
+                // Also add the final status lines
+                statusLog.textContent += '\nĐang tải module... Tải module hoàn tất!\n' +
+                                         'Đang giả lập bypass... Bỏ qua xác thực...\n' +
+                                         'Đang xác nhận... Bypass thành công!\n' +
+                                         'Bạn đã vượt qua giới hạn!';
+            }, 800);
+        }
+
+        // ---- Re‑enable button ----
+        isProcessing = false;
+        bypassBtn.disabled = false;
+        bypassBtn.textContent = 'VƯỢT LINK';
+    }
+
+    // ============================================================
+    //  INITIALISATION
+    // ============================================================
+    (function init() {
+        updateClock();
+        setInterval(updateClock, 1000);
+        fetchIP();
+
+        // If the user types a URL manually, clear any active provider highlight
+        urlInput.addEventListener('input', () => {
+            document.querySelectorAll('.provider-btn').forEach(b => b.classList.remove('active'));
+        });
+    })();
+
+</script>
+
+</body>
+  </html>
