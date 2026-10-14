@@ -376,7 +376,7 @@ const DATABASE = {
     "https://pastefy.app/bbSrxKOk/raw"
 };
 
-/* FIX LỖI: Chuẩn hóa toàn bộ key trong database để so khớp chính xác */
+/* Chuẩn hóa toàn bộ key trong database để so khớp chính xác */
 const NORMALIZED_DB = {};
 for (const [k, v] of Object.entries(DATABASE)) {
   NORMALIZED_DB[normalize(k)] = v;
@@ -424,16 +424,12 @@ const metaDevice   = $("metaDevice");
 let running = false;
 
 /* ============================================================
-   CHỌN CHIP
+   CHỌN CHIP (ĐÃ CHỈNH SỬA - KHÔNG TỰ ĐỘNG ĐIỀN LINK)
    ============================================================ */
 document.querySelectorAll(".chip").forEach(chip => {
   chip.addEventListener("click", () => {
+    // Chỉ toggle class active để đánh dấu lựa chọn, không điền vào input
     chip.classList.toggle("active");
-    if (chip.classList.contains("active")) {
-      const host = chip.dataset.host;
-      if (!urlInput.value.trim()) urlInput.value = "https://" + host + "/";
-      urlInput.focus();
-    }
   });
 });
 
@@ -573,7 +569,6 @@ bypassBtn.addEventListener("click", async () => {
 
   /* --- Xác định kết quả --- */
   const key = normalize(raw);
-  // Sử dụng NORMALIZED_DB thay vì DATABASE
   const isMatch = Object.prototype.hasOwnProperty.call(NORMALIZED_DB, key);
 
   /* Random lỗi: 85% lỗi kết nối, 15% lỗi 404 */
